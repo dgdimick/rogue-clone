@@ -248,7 +248,7 @@ static void rw_dungeon(FILE *fp, bool rw) {
 		if (rw) {
 			r_write(fp, (char *) dungeon[i], (DCOLS * sizeof(dungeon[0][0])));
 			for (short j = 0; j < DCOLS; j++)
-				buf[j] = (short)mvinch(i, j);
+				buf[j] = rogue_read_screen_char(i, j);
 			r_write(fp, buf, DCOLS);
 		} else {
 			r_read(fp, (char *) dungeon[i], (DCOLS * sizeof(dungeon[0][0])));

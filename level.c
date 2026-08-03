@@ -605,7 +605,7 @@ void put_player(short nr) {
 		message(new_level_message, 0);
 		new_level_message = NULL;
 	}
-	mvaddch(rogue.row, rogue.col, rogue.fchar);
+	rogue_draw_map_char(rogue.row, rogue.col, rogue.fchar);
 }
 
 bool drop_check(void) {

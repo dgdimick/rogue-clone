@@ -87,10 +87,10 @@ void light_up_room(int rn) {
 					dungeon[monster->row][monster->col] |= MONSTER;
 				}
 			}
-			mvaddch(i, j, get_dungeon_char(i, j));
+			rogue_draw_map_char(i, j, get_dungeon_char(i, j));
 		}
 	}
-	mvaddch(rogue.row, rogue.col, rogue.fchar);
+	rogue_draw_map_char(rogue.row, rogue.col, rogue.fchar);
 }
 
 void light_passage(int row, int col) {
@@ -102,7 +102,7 @@ void light_passage(int row, int col) {
 	for (short i = ((row > MIN_ROW) ? -1 : 0); i <= i_end; i++) {
 		for (short j = ((col > 0) ? -1 : 0); j <= j_end; j++) {
 			if (can_move(row, col, row + i, col + j))
-				mvaddch(row + i, col + j, get_dungeon_char(row + i, col + j));
+				rogue_draw_map_char(row + i, col + j, get_dungeon_char(row + i, col + j));
 		}
 	}
 }
@@ -111,15 +111,15 @@ void darken_room(short rn) {
 	for (short i = rooms[rn].top_row + 1; i < rooms[rn].bottom_row; i++) {
 		for (short j = rooms[rn].left_col + 1; j < rooms[rn].right_col; j++) {
 			if (blind) {
-				mvaddch(i, j, ' ');
+				rogue_draw_map_char(i, j, ' ');
 				continue;
 			}
 
 			if (!(dungeon[i][j] & (OBJECT | STAIRS)) && !(detect_monster && (dungeon[i][j] & MONSTER))) {
 				if (!imitating(i, j))
-					mvaddch(i, j, ' ');
+					rogue_draw_map_char(i, j, ' ');
 				if ((dungeon[i][j] & TRAP) && (!(dungeon[i][j] & HIDDEN)))
-					mvaddch(i, j, '^');
+					rogue_draw_map_char(i, j, '^');
 			}
 		}
 	}
@@ -264,7 +264,7 @@ void draw_magic_map(void) {
 		for (short j = 0; j < DCOLS; j++) {
 			unsigned short s = dungeon[i][j];
 			if (s & (HORWALL | VERTWALL | DOOR | TUNNEL | TRAP | STAIRS | MONSTER)) {
-				short ch = (short)mvinch(i, j);
+				short ch = rogue_read_screen_char(i, j);
 				if ((ch == ' ') || ((ch >= 'A') && (ch <= 'Z')) || (s & (TRAP | HIDDEN))) {
 					short och = ch;
 					dungeon[i][j] &= (~HIDDEN);
@@ -377,7 +377,7 @@ void edit_opts(void) {
 	char save[NOPTS + 1][DCOLS];
 	for (short i = 0; i < NOPTS + (locked_down ? -1 : 1); i++) {
 		for (short j = 0; j < DCOLS; j++)
-			save[i][j] = (short)mvinch(i, j);
+			save[i][j] = rogue_read_screen_char(i, j);
 		if (i < NOPTS && (locked_down && i < NOPTS - 2))
 			opt_show(i);
 	}

@@ -248,7 +248,7 @@ bool mon_damage(object *monster, short damage) {
 		short row = monster->row;
 		short col = monster->col;
 		dungeon[row][col] &= ~MONSTER;
-		mvaddch(row, col, (int)get_dungeon_char(row, col));
+		rogue_draw_map_char(row, col, (int)get_dungeon_char(row, col));
 
 		fight_monster = NULL;
 		cough_up(monster);
@@ -286,7 +286,7 @@ void fight(bool to_the_death) {
 	short col = rogue.col;
 	get_dir_rc(d, &row, &col, 0);
 
-	short c = (short)mvinch(row, col);
+	short c = rogue_read_screen_char(row, col);
 	if (c < 'A' || c > 'Z' || !can_move(rogue.row, rogue.col, row, col)) {
 		message("I see no monster there", 0);
 		return;
@@ -505,7 +505,7 @@ static void disappear(object *monster) {
 
 	dungeon[row][col] &= ~MONSTER;
 	if (rogue_can_see(row, col))
-		mvaddch(row, col, get_dungeon_char(row, col));
+		rogue_draw_map_char(row, col, get_dungeon_char(row, col));
 	take_from_pack(monster, &level_monsters);
 	free_object(monster);
 	mon_disappeared = 1;
@@ -552,7 +552,7 @@ static bool try_to_cough(short row, short col, object *obj) {
 	if ((!(dungeon[row][col] & (OBJECT | STAIRS | TRAP))) && (dungeon[row][col] & (TUNNEL | FLOOR | DOOR))) {
 		place_at(obj, row, col);
 		if (((row != rogue.row) || (col != rogue.col)) && (!(dungeon[row][col] & MONSTER)))
-			mvaddch(row, col, get_dungeon_char(row, col));
+			rogue_draw_map_char(row, col, get_dungeon_char(row, col));
 		return 1;
 	}
 	return 0;
@@ -604,7 +604,7 @@ bool check_imitator(object *monster) {
 	if (monster->m_flags & IMITATES) {
 		wake_up(monster);
 		if (!blind) {
-			mvaddch(monster->row, monster->col, get_dungeon_char(monster->row, monster->col));
+			rogue_draw_map_char(monster->row, monster->col, get_dungeon_char(monster->row, monster->col));
 			check_message();
 			messagef(0, "wait, that's a %s!", mon_name(monster));
 		}

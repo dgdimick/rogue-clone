@@ -161,7 +161,7 @@ void inventory(const object *pack, unsigned short mask, short dont_wait) {
 	for (short row = 0; ((row < i) && (row < DROWS)); row++) {
 		if (row > 0) {
 			for (j = col; j < DCOLS; j++) {
-				inv_descs[row-1][j-col] = (short)mvinch(row, j);
+				inv_descs[row-1][j-col] = rogue_read_screen_char(row, j);
 			}
 			inv_descs[row-1][j-col] = 0;
 		}
@@ -198,7 +198,7 @@ void show_help(void) {
 	char save[(((COMS / 2) + (COMS % 2)) + 1)][DCOLS];
 	for (short i = 0; i < rows; i++) {
 		for (short j = 0; j < DCOLS; j++)
-			save[i][j] = (short)mvinch(i, j);
+			save[i][j] = rogue_read_screen_char(i, j);
 	}
 
 	short k = 0;

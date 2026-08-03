@@ -3,11 +3,11 @@ PREFIX    ?= /usr/local
 MANPREFIX ?= ${PREFIX}/share/man
 NAME      ?= rogue-clone
 CFLAGS    += -std=c99 -g -Wall -pedantic -D_DEFAULT_SOURCE
-LDFLAGS   += -lcurses ${STATIC}
+LDFLAGS   += -lncurses
 
 .PHONY: all clean install uninstall
 
-SRC = hit.c inventory.c level.c machdep.c main.c message.c monster.c move.c \
+SRC = color.c hit.c inventory.c level.c machdep.c main.c message.c monster.c move.c \
       object.c pack.c play.c ring.c room.c save.c score.c throw.c trap.c use.c zap.c
 OBJ = ${SRC:.c=.o}
 

@@ -467,10 +467,10 @@ void show_objects(void) {
 				monster->trail_char = rc;
 			}
 		}
-		short mc = (short)mvinch(row, col);
+		short mc = rogue_read_screen_char(row, col);
 		if (((mc < 'A') || (mc > 'Z')) &&
 			((row != rogue.row) || (col != rogue.col))) {
-			mvaddch(row, col, rc);
+			rogue_draw_map_char(row, col, rc);
 		}
 		obj = obj->next_object;
 	}
@@ -479,7 +479,7 @@ void show_objects(void) {
 
 	while (monster) {
 		if (monster->m_flags & IMITATES) {
-			mvaddch(monster->row, monster->col, (int)monster->disguise);
+			rogue_draw_map_char(monster->row, monster->col, (int)monster->disguise);
 		}
 		monster = monster->next_monster;
 	}

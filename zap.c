@@ -173,13 +173,13 @@ static void tele_away(object *monster) {
 	short row, col;
 	gr_row_col(&row, &col, (FLOOR | TUNNEL | STAIRS | OBJECT));
 
-	mvaddch(monster->row, monster->col, monster->trail_char);
+	rogue_draw_map_char(monster->row, monster->col, monster->trail_char);
 	dungeon[monster->row][monster->col] &= ~MONSTER;
 	monster->row = row; monster->col = col;
 	dungeon[row][col] |= MONSTER;
-	monster->trail_char = (short)mvinch(row, col);
+	monster->trail_char = rogue_read_screen_char(row, col);
 	if (detect_monster || rogue_can_see(row, col))
-		mvaddch(row, col, gmc(monster));
+		rogue_draw_map_char(row, col, gmc(monster));
 }
 
 void wizardize(void) {
@@ -239,9 +239,9 @@ void bounce(short ball, short dir, short row, short col, short r) {
 
 	short orow = row, ocol = col;
 	do {
-		ch = (short)mvinch(orow, ocol);
+		ch = rogue_read_screen_char(orow, ocol);
 		standout();
-		mvaddch(orow, ocol, ch);
+		rogue_draw_map_char(orow, ocol, ch);
 		get_dir_rc(dir, &orow, &ocol, 1);
 	} while (!(	(ocol <= 0) ||
 				(ocol >= DCOLS-1) ||
@@ -254,8 +254,8 @@ void bounce(short ball, short dir, short row, short col, short r) {
 	do {
 		orow = row;
 		ocol = col;
-		ch = (short)mvinch(row, col);
-		mvaddch(row, col, ch);
+		ch = rogue_read_screen_char(row, col);
+		rogue_draw_map_char(row, col, ch);
 		get_dir_rc(dir, &row, &col, 1);
 	} while (!(	(col <= 0) ||
 				(col >= DCOLS-1) ||

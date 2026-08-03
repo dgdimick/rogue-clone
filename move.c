@@ -103,8 +103,8 @@ short one_move_rogue(int dirch, short pickup) {
 	} else if (dungeon[row][col] & TUNNEL)
 		light_passage(row, col);
 
-	mvaddch(rogue.row, rogue.col, get_dungeon_char(rogue.row, rogue.col));
-	mvaddch(row, col, rogue.fchar);
+	rogue_draw_map_char(rogue.row, rogue.col, get_dungeon_char(rogue.row, rogue.col));
+	rogue_draw_map_char(row, col, rogue.fchar);
 	refresh();
 	rogue.row = row;
 	rogue.col = col;

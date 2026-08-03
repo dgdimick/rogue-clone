@@ -123,6 +123,7 @@ bool init(int argc, char *argv[]) {
 	}
 
 	initscr();
+	rogue_init_colors();
 	if (LINES < DROWS || COLS < DCOLS)
 		clean_up("must be played on 24 x 80 screen");
 	start_window();

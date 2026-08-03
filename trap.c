@@ -82,7 +82,7 @@ void trap_player(short row, short col) {
 		bear_trap = get_rand(4, 7);
 		break;
 	case TELE_TRAP:
-		mvaddch(rogue.row, rogue.col, '^');
+		rogue_draw_map_char(rogue.row, rogue.col, '^');
 		tele();
 		break;
 	case DART_TRAP:
@@ -163,7 +163,7 @@ void show_traps(void) {
 	for (short i = 0; i < DROWS; i++) {
 		for (short j = 0; j < DCOLS; j++) {
 			if (dungeon[i][j] & TRAP)
-				mvaddch(i, j, '^');
+				rogue_draw_map_char(i, j, '^');
 		}
 	}
 }
@@ -196,7 +196,7 @@ void search(short n, bool is_auto) {
 					if (rand_percent(17 + (rogue.exp + ring_exp))) {
 						dungeon[row][col] &= (~HIDDEN);
 						if (!blind && (row != rogue.row || col != rogue.col))
-							mvaddch(row, col, get_dungeon_char(row, col));
+							rogue_draw_map_char(row, col, get_dungeon_char(row, col));
 						shown++;
 						if (dungeon[row][col] & TRAP) {
 							short t = trap_at(row, col);

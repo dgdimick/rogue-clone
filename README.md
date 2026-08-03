@@ -290,3 +290,17 @@ Source files for rogue; most are pretty much the same as far as I could see:
   (Removed in 5).
 - https://www.freshports.org/games/bsdgames/ (the "BSD games" were moved to a
   port in FreeBSD 5; I used this as a starting point)
+
+
+## Optional Color Display
+
+This fork adds ncurses colors while preserving the original fog-of-war and
+visibility behavior. Monsters are colored by letter range, the player is cyan,
+objects are yellow, stairs are green, and visible traps are red. Terminals
+without color support automatically use the original monochrome display.
+
+### Color movement fix
+
+The color support masks ncurses attribute bits whenever Rogue reads a screen
+cell. This preserves the original trail character beneath moving monsters, so
+their previous position is restored correctly.

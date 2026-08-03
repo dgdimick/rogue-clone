@@ -267,7 +267,7 @@ static void save_screen(void) {
 		bool found_non_blank = 0;
 		char buf[DCOLS + 2];
 		for (short j = (DCOLS - 1); j >= 0; j--) {
-			buf[j] = (short)mvinch(i, j);
+			buf[j] = rogue_read_screen_char(i, j);
 			if (!found_non_blank) {
 				if (buf[j] != ' ' || j == 0) {
 					buf[j + ((j == 0) ? 0 : 1)] = 0;

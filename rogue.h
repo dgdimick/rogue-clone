@@ -40,6 +40,11 @@
  */
 
 #include <curses.h>
+
+/* Optional color support. These functions do not change visibility logic. */
+void rogue_init_colors(void);
+int rogue_draw_map_char(int row, int col, chtype ch);
+short rogue_read_screen_char(int row, int col);
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>

@@ -395,7 +395,7 @@ static void hold_monster(void) {
 }
 
 void tele(void) {
-	mvaddch(rogue.row, rogue.col, get_dungeon_char(rogue.row, rogue.col));
+	rogue_draw_map_char(rogue.row, rogue.col, get_dungeon_char(rogue.row, rogue.col));
 
 	if (cur_room >= 0)
 		darken_room(cur_room);
@@ -410,7 +410,7 @@ void hallucinate(void) {
 
 	object *obj = level_objects.next_object;
 	while (obj) {
-		short ch = (short)mvinch(obj->row, obj->col);
+		short ch = rogue_read_screen_char(obj->row, obj->col);
 		if ((ch < 'A' || ch > 'Z') && (obj->row != rogue.row || obj->col != rogue.col)) {
 			if (ch != ' ' && ch != '.' && ch != '#' && ch != '+')
 				addch(gr_obj_char());
@@ -420,7 +420,7 @@ void hallucinate(void) {
 
 	object *monster = level_monsters.next_monster;
 	while (monster) {
-		short ch = (short)mvinch(monster->row, monster->col);
+		short ch = rogue_read_screen_char(monster->row, monster->col);
 		if (ch >= 'A' && ch <= 'Z')
 			addch(get_rand('A', 'Z'));
 		monster = monster->next_monster;
@@ -448,7 +448,7 @@ void relight(void) {
 		light_passage(rogue.row, rogue.col);
 	else
 		light_up_room(cur_room);
-	mvaddch(rogue.row, rogue.col, rogue.fchar);
+	rogue_draw_map_char(rogue.row, rogue.col, rogue.fchar);
 }
 
 void take_a_nap(void) {
@@ -469,17 +469,17 @@ static void go_blind(void) {
 	if (detect_monster) {
 		object *monster = level_monsters.next_monster;
 		while (monster) {
-			mvaddch(monster->row, monster->col, monster->trail_char);
+			rogue_draw_map_char(monster->row, monster->col, monster->trail_char);
 			monster = monster->next_monster;
 		}
 	}
 	if (cur_room >= 0) {
 		for (short i = rooms[cur_room].top_row + 1; i < rooms[cur_room].bottom_row; i++) {
 			for (short j = rooms[cur_room].left_col + 1; j < rooms[cur_room].right_col; j++)
-				mvaddch(i, j, ' ');
+				rogue_draw_map_char(i, j, ' ');
 		}
 	}
-	mvaddch(rogue.row, rogue.col, rogue.fchar);
+	rogue_draw_map_char(rogue.row, rogue.col, rogue.fchar);
 }
 
 static const char * get_ench_color(void) {

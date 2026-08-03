@@ -341,27 +341,27 @@ void move_mon_to(object *monster, short row, short col) {
 	dungeon[mrow][mcol] &= ~MONSTER;
 	dungeon[row][col] |= MONSTER;
 
-	short c = (short)mvinch(mrow, mcol);
+	short c = rogue_read_screen_char(mrow, mcol);
 	if ((c >= 'A') && (c <= 'Z')) {
 		if (!detect_monster)
-			mvaddch(mrow, mcol, monster->trail_char);
+			rogue_draw_map_char(mrow, mcol, monster->trail_char);
 		else {
 			if (rogue_can_see(mrow, mcol))
-				mvaddch(mrow, mcol, monster->trail_char);
+				rogue_draw_map_char(mrow, mcol, monster->trail_char);
 			else {
 				if (monster->trail_char == '.')
 					monster->trail_char = ' ';
-				mvaddch(mrow, mcol, monster->trail_char);
+				rogue_draw_map_char(mrow, mcol, monster->trail_char);
 			}
 		}
 	}
-	monster->trail_char = (short)mvinch(row, col);
+	monster->trail_char = rogue_read_screen_char(row, col);
 	if (!blind && (detect_monster || rogue_can_see(row, col))) {
 		if ((!(monster->m_flags & INVISIBLE) || (detect_monster || see_invisible || r_see_invisible)))
-			mvaddch(row, col, gmc(monster));
+			rogue_draw_map_char(row, col, gmc(monster));
 	}
 	if ((dungeon[row][col] & DOOR) && (get_room_number(row, col) != cur_room) && (dungeon[mrow][mcol] == FLOOR) && !blind)
-		mvaddch(mrow, mcol, ' ');
+		rogue_draw_map_char(mrow, mcol, ' ');
 	if (dungeon[row][col] & DOOR) {
 		dr_course(monster, ((dungeon[mrow][mcol] & TUNNEL) ? 1 : 0), row, col);
 	} else {
@@ -477,7 +477,7 @@ void show_monsters(void) {
 	detect_monster = 1;
 	object *monster = level_monsters.next_monster;
 	while (monster) {
-		mvaddch(monster->row, monster->col, monster->m_char);
+		rogue_draw_map_char(monster->row, monster->col, monster->m_char);
 		if (monster->m_flags & IMITATES) {
 			monster->m_flags &= (~IMITATES);
 			monster->m_flags |= WAKENS;
@@ -503,7 +503,7 @@ void create_monster(void) {
 	if (found) {
 		object *monster = gr_monster(NULL, 0);
 		put_m_at(row, col, monster);
-		mvaddch(row, col, gmc(monster));
+		rogue_draw_map_char(row, col, gmc(monster));
 		if (monster->m_flags & (WANDERS | WAKENS))
 			wake_up(monster);
 	} else
@@ -514,7 +514,7 @@ static void put_m_at(short row, short col, object *monster) {
 	monster->row = row;
 	monster->col = col;
 	dungeon[row][col] |= MONSTER;
-	monster->trail_char = (short)mvinch(row, col);
+	monster->trail_char = rogue_read_screen_char(row, col);
 	add_to_pack(monster, &level_monsters, 0);
 	aim_monster(monster);
 }
@@ -604,7 +604,7 @@ void aggravate(void) {
 		wake_up(monster);
 		monster->m_flags &= (~IMITATES);
 		if (rogue_can_see(monster->row, monster->col))
-			mvaddch(monster->row, monster->col, monster->m_char);
+			rogue_draw_map_char(monster->row, monster->col, monster->m_char);
 		monster = monster->next_monster;
 	}
 }

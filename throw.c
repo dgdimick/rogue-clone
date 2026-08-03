@@ -88,11 +88,11 @@ void throw(void) {
 		un_put_on(weapon);
 
 	object *monster = get_thrown_at_monster(weapon, d, &row, &col);
-	mvaddch(rogue.row, rogue.col, rogue.fchar);
+	rogue_draw_map_char(rogue.row, rogue.col, rogue.fchar);
 	refresh();
 
 	if (rogue_can_see(row, col) && ((row != rogue.row) || (col != rogue.col)))
-		mvaddch(row, col, get_dungeon_char(row, col));
+		rogue_draw_map_char(row, col, get_dungeon_char(row, col));
 
 	if (monster) {
 		wake_up(monster);
@@ -149,11 +149,11 @@ static object * get_thrown_at_monster(object *obj, short dir, short *row, short 
 			return 0;
 		}
 		if ((i != 0) && rogue_can_see(orow, ocol))
-			mvaddch(orow, ocol, get_dungeon_char(orow, ocol));
+			rogue_draw_map_char(orow, ocol, get_dungeon_char(orow, ocol));
 
 		if (rogue_can_see(*row, *col)) {
 			if (!(dungeon[*row][*col] & MONSTER))
-				mvaddch(*row, *col, ch);
+				rogue_draw_map_char(*row, *col, ch);
 			refresh();
 		}
 		orow = *row; ocol = *col;
@@ -194,16 +194,16 @@ static void flop_weapon(object *weapon, short row, short col) {
 			dungeon[row][col] &= (~MONSTER);
 			short dch = get_dungeon_char(row, col);
 			if (mon) {
-				short mch = (short)mvinch(row, col);
+				short mch = rogue_read_screen_char(row, col);
 				object *monster;
 				if ((monster = object_at(&level_monsters,
 				    row, col)) != NULL) {
 					monster->trail_char = dch;
 				}
 				if ((mch < 'A') || (mch > 'Z'))
-					mvaddch(row, col, dch);
+					rogue_draw_map_char(row, col, dch);
 			} else
-				mvaddch(row, col, dch);
+				rogue_draw_map_char(row, col, dch);
 			dungeon[row][col] |= mon;
 		}
 	} else {

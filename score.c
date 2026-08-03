@@ -136,7 +136,7 @@ void quit(bool from_intrpt) {
 		mc = msg_cleared;
 
 		for (short i = 0; i < DCOLS; i++)
-			buf[i] = (short)mvinch(0, i);
+			buf[i] = rogue_read_screen_char(0, i);
 	}
 	check_message();
 	message("really quit?", 1);
