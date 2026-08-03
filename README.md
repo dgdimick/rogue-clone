@@ -112,6 +112,10 @@ GitHub: `dgdimick`
 
 See the repository’s existing license and copyright files for the applicable terms.
 
+
+
+## Original README.md
+
 ![screenshot.png](https://raw.githubusercontent.com/arp242/rogue-clone/master/doc/screenshot.png)
 
 There are many versions and variants of the original rogue game; the original
