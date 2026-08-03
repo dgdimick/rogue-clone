@@ -1,5 +1,117 @@
 The "rogue" game from 4.3BSD-Tahoe, for modern systems.
 
+# Rogue Clone
+
+A modernized clone of the classic ASCII dungeon-crawling game **Rogue**.
+
+This fork includes a Raspberry Pi build fix and has been tested on Raspberry Pi OS running on ARM64 hardware.
+
+## Raspberry Pi Support
+
+This version has been confirmed to compile and run on Raspberry Pi OS.
+
+### Tested Platform
+
+* Raspberry Pi OS
+* ARM64 / AArch64
+* GCC
+* ncurses
+
+## Requirements
+
+Install the compiler, build tools, and ncurses development library:
+
+```bash
+sudo apt update
+sudo apt install -y build-essential libncurses-dev
+```
+
+## Clone This Fork
+
+```bash
+cd ~/Github
+git clone https://github.com/dgdimick/rogue-clone.git
+cd rogue-clone
+```
+
+## Build
+
+Compile the game with:
+
+```bash
+make
+```
+
+The executable will be created as:
+
+```text
+rogue-clone
+```
+
+## Run
+
+Start the game with:
+
+```bash
+./rogue-clone
+```
+
+## Clean the Build
+
+Remove compiled object files and the executable with:
+
+```bash
+make clean
+```
+
+## Raspberry Pi Build Fix
+
+The original Makefile attempted to create a statically linked executable using:
+
+```text
+-lcurses -static
+```
+
+Static linking caused unresolved ncurses symbols on Raspberry Pi OS.
+
+This fork removes the forced static-link option and links dynamically with ncurses:
+
+```text
+-lncurses
+```
+
+The corrected linker command is:
+
+```bash
+cc -o rogue-clone *.o -lncurses
+```
+
+## Changes in This Fork
+
+* Removed forced static linking from the Makefile
+* Changed the curses linker option from `-lcurses -static` to `-lncurses`
+* Confirmed compilation on Raspberry Pi OS ARM64
+* Added Raspberry Pi build documentation
+
+## Original Project
+
+This repository is a fork of:
+
+```text
+https://github.com/arp242/rogue-clone
+```
+
+The original project authors, credits, copyright notices, and licensing terms remain unchanged.
+
+## Fork Maintainer
+
+Denis Dimick
+GitHub: `dgdimick`
+
+## License
+
+See the repository’s existing license and copyright files for the applicable terms.
+
 ![screenshot.png](https://raw.githubusercontent.com/arp242/rogue-clone/master/doc/screenshot.png)
 
 There are many versions and variants of the original rogue game; the original
