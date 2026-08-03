@@ -2,7 +2,6 @@ CC        ?= cc
 PREFIX    ?= /usr/local
 MANPREFIX ?= ${PREFIX}/share/man
 NAME      ?= rogue-clone
-STATIC    ?= -static
 CFLAGS    += -std=c99 -g -Wall -pedantic -D_DEFAULT_SOURCE
 LDFLAGS   += -lcurses ${STATIC}
 
